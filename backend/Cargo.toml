@@ -1,0 +1,32 @@
+[package]
+name = "mente_ggz"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+path = "src/main.rs"
+name = "mente_ggz"
+
+[dependencies]
+axum = { version = "0.6.0-rc.2", features = ["headers"] }
+hyper = "0.14"
+serde_json = "1.0"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+tower-http = { version = "0.3", features = ["trace", "cors"] }
+config = "0.13"
+
+[dependencies.tokio]
+version = "1"
+features = ["rt-multi-thread", "macros"]
+
+[dependencies.serde]
+version = "1"
+features = ["derive"]
+
+[dev-dependencies]
+reqwest = "0.11"
+test-case = "2.2"
