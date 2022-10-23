@@ -1,7 +1,16 @@
-import { component$, useResource$, Resource } from "@builder.io/qwik";
+import {
+  component$,
+  useResource$,
+  Resource,
+  useSignal,
+} from "@builder.io/qwik";
 
 export default component$(() => {
-  const testDataResource = useResource$<string[]>(({ cleanup }) => {
+  const signal = useSignal(0);
+
+  const testDataResource = useResource$<string[]>(({ cleanup, track }) => {
+    track(() => signal.value);
+
     const controller = new AbortController();
     cleanup(() => controller.abort());
 
@@ -13,8 +22,13 @@ export default component$(() => {
       <h1>
         Welcome to Qwik <span class="lightning">⚡️</span>
       </h1>
+      {}
+      <button onClick$={() => signal.value++}>Test {signal.value}</button>
+
       <Resource
         value={testDataResource}
+        onPending={() => <h1>Loading...</h1>}
+        onRejected={(error) => <>Error: {error.message}</>}
         onResolved={(data) => (
           <ul>
             {data.map((data) => (
